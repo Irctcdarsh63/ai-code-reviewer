@@ -9,7 +9,7 @@ print("--- AI Code Reviewer Starting ---")
 def get_git_diff() -> str:
     base_ref = os.getenv("GITHUB_BASE_REF", "main")
     print(f"Base branch: {base_ref}")
-    
+
     try:
         subprocess.run(["git", "fetch", "origin", base_ref], check=True)
     except Exception as e:
@@ -51,7 +51,6 @@ def post_github_comment(review_body: str):
 token = os.getenv("GITHUB_TOKEN")
 repo = os.getenv("GITHUB_REPOSITORY")
 pr_num = os.getenv("PR_NUMBER")
-
 print(f"Posting comment to PR #{pr_num} on {repo}...")
 url = f"https://api.github.com/repos/{repo}/issues/{pr_num}/comments"
 headers = {
@@ -82,15 +81,3 @@ review = analyze_diff_with_gemini(diff)
 post_github_comment(review)
 if name == "main":
 main()
-
-
-Save with **Ctrl + S** and close Notepad.
-
----
-
-### Step 3: Add test code to `tests/dummy_code.py`
-
-Make sure there is actually altered code to trigger the diff:
-
-```cmd
-notepad tests\dummy_code.py
