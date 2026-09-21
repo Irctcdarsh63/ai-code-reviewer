@@ -1,18 +1,17 @@
 import sqlite3
 
-def find_user_by_name(username):
-    # Critical security issue: SQL Injection vulnerability
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-    query = f"SELECT * FROM users WHERE name = '{username}'"
-    cursor.execute(query)
-    return cursor.fetchall()
+def get_user_data(user_id):
+    # Vulnerability: Direct SQL interpolation
+    conn = sqlite3.connect("users.db")
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM users WHERE id = '{user_id}'")
+    return cur.fetchall()
 
-def find_duplicates(items):
-    # Performance issue: O(N^2) complexity
+def slow_duplicate_check(numbers):
+    # Performance flaw: Nested loop O(N^2)
     duplicates = []
-    for i in range(len(items)):
-        for j in range(i + 1, len(items)):
-            if items[i] == items[j] and items[i] not in duplicates:
-                duplicates.append(items[i])
+    for i in range(len(numbers)):
+        for j in range(i + 1, len(numbers)):
+            if numbers[i] == numbers[j] and numbers[i] not in duplicates:
+                duplicates.append(numbers[i])
     return duplicates
